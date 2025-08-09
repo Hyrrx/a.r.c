@@ -1,7 +1,7 @@
-# A.R.C
+# A.R.C 0️⃣
 The Archive of Regulated Chrono-Anomalies is a fictional organization dedicated to securing and containing objects and phenomena that defy the normal flow of time.
 
-# License
+# License 1️⃣
 ### Section 1: Core Philosophy
 The A.R.C. universe is a work of fiction. All organizations, characters, incidents, and anomalies are products of imagination.
 
