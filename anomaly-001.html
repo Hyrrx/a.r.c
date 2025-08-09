@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Template: ARC-001</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Roboto Mono', monospace; padding: 40px; }
+        h1 { font-family: 'Orbitron', sans-serif; color: white; border-bottom: 2px solid #58a6ff; padding-bottom: 10px; margin-bottom: 30px;}
+        h2 { border-left: 4px solid #58a6ff; padding-left: 15px; }
+        .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: #161b22; }
+        /* --- Bu stil, sansürlü metinler için gereklidir --- */
+        .redacted { background-color: #c9d1d9; color: #c9d1d9; user-select: none; border-radius: 3px; padding: 0 2px; }
+    </style>
+</head>
+<body>
+    <h1>File: Anomaly ARC-001</h1>
+    <div class="info-block"><strong>Object Class:</strong> Safe</div>
+
+    <h2>Containment Procedures</h2>
+    <p>Object is to be kept in a standard secure locker at Site-19. Access does not require special clearance.</p>
+
+    <h2>Description</h2>
+    <p>
+        ARC-001 is a common fountain pen of indeterminate brand, discovered in the year <span class="redacted">████</span>. When used to write, it does not require ink. 
+        Any text written with the pen will slowly fade and disappear completely within 24 hours, leaving no trace on the paper.
+    </p>
+    <p>
+        Analysis of the pen's material has been inconclusive, though it shows properties similar to those found at the <span class="redacted">████████████</span> incident site. 
+        Its anomalous effects cannot be disabled.
+    </p>
+
+    <!-- 
+        Bu script bloğu, anomali verilerini dashboard'a bildirir.
+        Yeni bir anomali oluştururken bu yapıyı kopyalayın.
+    -->
+    <script type="application/json">
+        {
+            "id": "ARC-001",
+            "name": "The Ephemeral Pen",
+            "requiresPassword": false
+        }
+
+        // --- YENİ ANOMALİ OLUŞTURAN GELİŞTİRİCİ İÇİN NOT ---
+        //
+        // Bu anomaliyi şifre korumalı yapmak için aşağıdaki iki adımı izleyin:
+        //
+        // 1. Yukarıdaki "requiresPassword" değerini `false` yerine `true` olarak değiştirin.
+        //
+        // 2. JSON bloğunun içine, son süslü parantezden `}` önce gelecek şekilde
+        //    bir virgül ve şifre satırı ekleyin. Örnek:
+        //
+        //    , "password": "sizin_gizli_sifreniz"
+        //
+        //
+        //    Örnek olarak şifreli bir dosya şöyle görünmelidir:
+        //    {
+        //        "id": "ARC-XXX",
+        //        "name": "Yeni Anomali",
+        //        "requiresPassword": true,
+        //        "password": "pass123"
+        //    }
+        //
+    </script>
+</body>
+</html>
