@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.R.C. Database</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d1117; --secondary-color: #161b22; --border-color: #30363d;
+            --text-color: #c9d1d9; --accent-color: #58a6ff; --redacted-color: #ff4d4d;
+        }
+        body {
+            background-color: var(--primary-color); color: var(--text-color);
+            font-family: 'Roboto Mono', monospace; margin: 0;
+            display: flex; height: 100vh; overflow: hidden;
+        }
+        #sidebar {
+            width: 320px; background-color: var(--secondary-color);
+            border-right: 1px solid var(--border-color); padding: 25px;
+            display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto;
+        }
+        #sidebar-header {
+            font-family: 'Orbitron', sans-serif; font-size: 24px; color: var(--accent-color);
+            text-shadow: 0 0 5px var(--accent-color); margin-bottom: 40px; text-align: center;
+        }
+        #anomaly-list { list-style-type: none; padding: 0; margin: 0; }
+        #anomaly-list li {
+            color: var(--text-color); text-decoration: none; padding: 12px 15px;
+            margin-bottom: 8px; border-radius: 6px; cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease; border: 1px solid transparent;
+        }
+        #anomaly-list li:hover { background-color: var(--accent-color); color: var(--primary-color); }
+        #anomaly-list li.active { border-left: 4px solid var(--accent-color); background-color: #30363d; }
+        #anomaly-list li .lock-icon { float: right; opacity: 0.6; }
+        #main-content { flex-grow: 1; position: relative; }
+        #content-frame { width: 100%; height: 100%; border: none; }
+        #welcome-screen { padding: 40px; text-align: center; }
+        h1 { font-family: 'Orbitron', sans-serif; color: white; }
+        /* Password Modal */
+        #password-modal {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            justify-content: center; align-items: center; z-index: 1000;
+        }
+        .password-prompt {
+            background-color: var(--secondary-color); border: 1px solid var(--border-color);
+            padding: 30px; border-radius: 8px; text-align: center; width: 350px;
+        }
+        .password-prompt label { display: block; margin-bottom: 15px; font-weight: bold; color: var(--accent-color); }
+        .password-prompt input {
+            background-color: var(--primary-color); border: 1px solid var(--border-color);
+            color: var(--text-color); padding: 10px; width: 80%; border-radius: 4px;
+            text-align: center; font-family: 'Roboto Mono', monospace;
+        }
+        .password-prompt button {
+            background-color: var(--accent-color); color: var(--primary-color); border: none;
+            padding: 10px 20px; margin-top: 20px; border-radius: 4px; cursor: pointer; font-weight: bold;
+        }
+        .access-denied { color: var(--redacted-color); margin-top: 15px; display: none; }
+    </style>
+</head>
+<body>
+    <aside id="sidebar">
+        <div id="sidebar-header">A.R.C. DATABASE</div>
+        <ul id="anomaly-list">
+            <!-- Anomaly list will be dynamically generated here -->
+        </ul>
+    </aside>
+
+    <main id="main-content">
+        <div id="welcome-screen">
+            <h1>Welcome, Operator.</h1>
+            <p>Select a file from the database to begin.</p>
+        </div>
+        <iframe id="content-frame" style="display:none;"></iframe>
+    </main>
+
+    <div id="password-modal">
+        <div class="password-prompt">
+            <label id="password-label" for="password-input">AUTHENTICATION REQUIRED</label>
+            <input type="password" id="password-input" placeholder="Enter Passcode...">
+            <p class="access-denied" id="denied-message">ACCESS DENIED</p>
+            <button id="password-submit">Authenticate</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const anomalyFiles = ['anomaly-001.html', 'anomaly-002.html', 'anomaly-003.html'];
+            const anomalyList = document.getElementById('anomaly-list');
+
+            // This function simulates fetching metadata from each file
+            const fetchAnomalyData = async (fileName) => {
+                try {
+                    const response = await fetch(fileName);
+                    const text = await response.text();
+                    // This is a clever way to extract the script content without running it
+                    const doc = new DOMParser().parseFromString(text, 'text/html');
+                    const scriptTag = doc.querySelector('script[type="application/json"]');
+                    if (scriptTag) {
+                        return JSON.parse(scriptTag.textContent);
+                    }
+                    return null;
+                } catch (error) {
+                    console.error(`Could not load or parse ${fileName}:`, error);
+                    return null;
+                }
+            };
+            
+            for (const file of anomalyFiles) {
+                const data = await fetchAnomalyData(file);
+                if (data) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${data.id}: ${data.name}`;
+                    listItem.dataset.fileName = file; // Store file name
+
+                    if (data.requiresPassword) {
+                        const lockIcon = document.createElement('span');
+                        lockIcon.className = 'lock-icon';
+                        lockIcon.textContent = '🔒';
+                        listItem.appendChild(lockIcon);
+                    }
+                    
+                    listItem.addEventListener('click', () => handleAnomalyClick(file, data));
+                    anomalyList.appendChild(listItem);
+                }
+            }
+        });
+
+        const contentFrame = document.getElementById('content-frame');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const passwordModal = document.getElementById('password-modal');
+        const passwordInput = document.getElementById('password-input');
+        const passwordSubmit = document.getElementById('password-submit');
+        const deniedMessage = document.getElementById('denied-message');
+
+        function handleAnomalyClick(fileName, data) {
+            // Highlight the active item
+            document.querySelectorAll('#anomaly-list li').forEach(li => li.classList.remove('active'));
+            document.querySelector(`[data-file-name="${fileName}"]`).classList.add('active');
+
+            if (data.requiresPassword) {
+                passwordModal.style.display = 'flex';
+                passwordInput.value = '';
+                deniedMessage.style.display = 'none';
+                
+                // Clone and replace the button to remove old event listeners
+                const newSubmit = passwordSubmit.cloneNode(true);
+                passwordSubmit.parentNode.replaceChild(newSubmit, passwordSubmit);
+
+                newSubmit.addEventListener('click', () => {
+                    if (passwordInput.value === data.password) {
+                        loadAnomaly(fileName);
+                    } else {
+                        deniedMessage.style.display = 'block';
+                    }
+                });
+            } else {
+                loadAnomaly(fileName);
+            }
+        }
+
+        function loadAnomaly(fileName) {
+            passwordModal.style.display = 'none';
+            welcomeScreen.style.display = 'none';
+            contentFrame.style.display = 'block';
+            contentFrame.src = fileName;
+        }
+
+    </script>
+</body>
+</html>
+2. Anomaly 001 (anomaly-001.html)
+
+A basic file that does not require a password.
+
+code
+Html
+download
+content_copy
+expand_less
+IGNORE_WHEN_COPYING_START
+IGNORE_WHEN_COPYING_END
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File: ARC-001</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Roboto Mono', monospace; padding: 40px; }
+        h2 { color: #c9d1d9; border-left: 4px solid #58a6ff; padding-left: 15px; }
+        .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <h1>File: Anomaly ARC-001</h1>
+    
+    <div class="info-block">
+        <strong>Object Class:</strong> Safe
+    </div>
+
+    <h2>Containment Procedures</h2>
+    <p>Object is to be kept in a standard secure locker at Site-19. No further precautions are deemed necessary.</p>
+
+    <h2>Description</h2>
+    <p>ARC-001 is a common fountain pen of indeterminate brand. When used to write, it does not require ink. Any text written with the pen will slowly fade and disappear completely within 24 hours, leaving no trace on the paper.</p>
+
+    <!-- This special script tag holds the file's data for the dashboard to read -->
+    <script type="application/json">
+        {
+            "id": "ARC-001",
+            "name": "The Ephemeral Pen",
+            "requiresPassword": false
+        }
+    </script>
+</body>
+</html>
+3. Anomaly 002 (anomaly-002.html)
+
+A file that does require a password.
+
+code
+Html
+download
+content_copy
+expand_less
+IGNORE_WHEN_COPYING_START
+IGNORE_WHEN_COPYING_END
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File: ARC-002</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Roboto Mono', monospace; padding: 40px; }
+        h2 { color: #c9d1d9; border-left: 4px solid #58a6ff; padding-left: 15px; }
+        .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <h1>File: Anomaly ARC-002</h1>
+    
+    <div class="info-block">
+        <strong>Object Class:</strong> Euclid
+    </div>
+
+    <h2>Containment Procedures</h2>
+    <p>ARC-002 is to be contained in a sound-proofed chamber. All personnel entering must wear active noise-cancelling headphones. No verbal communication is permitted within the containment area.</p>
+
+    <h2>Description</h2>
+    <p>ARC-002 is a vintage radio. When powered, it emits a low hum. Any person who hears this hum will begin to hear faint whispers. Prolonged exposure causes these whispers to become distinct, revealing personal secrets and anxieties of the listener, leading to severe paranoia.</p>
+
+    <!-- Metadata for the dashboard -->
+    <script type="application/json">
+        {
+            "id": "ARC-002",
+            "name": "The Paranoia Machine",
+            "requiresPassword": true,
+            "password": "whisper"
+        }
+    </script>
+</body>
+</html>
+4. Anomaly 003 (anomaly-003.html)
+
+Another password-protected file with redacted text.
+
+code
+Html
+download
+content_copy
+expand_less
+IGNORE_WHEN_COPYING_START
+IGNORE_WHEN_COPYING_END
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File: ARC-003</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Roboto Mono', monospace; padding: 40px; }
+        h2 { color: #c9d1d9; border-left: 4px solid #58a6ff; padding-left: 15px; }
+        .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: rgba(0,0,0,0.2); }
+        .redacted { background-color: #c9d1d9; color: #c9d1d9; user-select: none; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>File: Anomaly ARC-003</h1>
+    
+    <div class="info-block">
+        <strong>Object Class:</strong> Keter
+    </div>
+
+    <h2>Containment Procedures</h2>
+    <p>The object must be kept in a perpetually dark, electromagnetically-shielded vault. Under no circumstances should ARC-003 be exposed to any form of light or electromagnetic radiation.</p>
+
+    <h2>Description</h2>
+    <p>ARC-003 is a small, perfectly smooth sphere made of an unknown, non-reflective material. When in absolute darkness, it is inert. If exposed to light, it begins to <span class="redacted">██████████████████████</span>, causing rapid environmental decay in a 50-meter radius. The process is irreversible and appears to violate the laws of <span class="redacted">███████████</span>.</p>
+
+    <!-- Metadata for the dashboard -->
+    <script type="application/json">
+        {
+            "id": "ARC-003",
+            "name": "The Void Sphere",
+            "requiresPassword": true,
+            "password": "eclipse"
+        }
+    </script>
+</body>
+</html>
