@@ -2,7 +2,17 @@
 The A.R.C. universe is a work of fiction. All organizations, characters, incidents, and anomalies are products of imagination.
 
 ### Section 2: Permissions
-You are granted the freedom to share, adapt, remix, transform, and build upon The Work for any purpose, including commercial, provided that you adhere to the conditions below.
+Subject to the conditions and restrictions below, you are granted a license to create derivative works.
+
+**2.1: Prohibited Uses**
+This license EXPLICITLY PROHIBITS the use of The Work for creating content that is:
+*   Pornographic, sexually explicit, or obscene (NSFW).
+*   Involving hate speech, discrimination, or harassment targeting any individual or group.
+*   Intended to defame, libel, or slander any person.
+*   Promoting illegal activities.
+
+   Any content falling into these categories is a violation of this license, and permission to use The Work is automatically revoked.
+
 
 ### Section 3: Mandatory Conditions
 
