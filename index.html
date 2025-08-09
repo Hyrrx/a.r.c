@@ -30,6 +30,7 @@
         .nav-link {
             padding: 12px 15px; margin-bottom: 8px; border-radius: 6px; cursor: pointer;
             border-left: 4px solid transparent; transition: all 0.2s ease;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .nav-link:hover { background-color: var(--border-color); }
         .nav-link.active {
@@ -50,16 +51,16 @@
         .content-page { display: none; }
         .content-page.active { display: block; }
         .content-page h1 { font-family: 'Orbitron', sans-serif; color: white; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px;}
-        .content-page h2 { border-left: 4px solid #58a6ff; padding-left: 15px; }
-        .content-page h3 { border-left: 3px solid var(--accent-color); padding-left: 10px; margin-top: 30px; }
-        .content-page .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: var(--secondary-color); }
-        .content-page .redacted { background-color: #c9d1d9; color: #c9d1d9; user-select: none; border-radius: 3px; padding: 0 2px; }
-        .content-page pre { white-space: pre-wrap; word-wrap: break-word; font-size: 0.9em; line-height: 1.6; background-color: var(--secondary-color); padding: 15px; border-radius: 5px; border: 1px solid var(--border-color);}
+        .content-page h2 { border-left: 4px solid #58a6ff; padding-left: 15px; margin-top: 40px; }
+        .content-page h3 { border-left: 3px solid var(--border-color); color: #a6b0b9; padding-left: 10px; margin-top: 30px; border-bottom: 1px dotted #30363d; padding-bottom: 5px; }
+        .content-page .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: var(--secondary-color); line-height: 1.8; }
+        .content-page .redacted { background-color: #c9d1d9; color: #c9d1d9; user-select: none; border-radius: 3px; padding: 0 4px; }
+        .content-page pre { white-space: pre-wrap; word-wrap: break-word; font-size: 0.9em; line-height: 1.6; background-color: #000; padding: 15px; border-radius: 5px; border: 1px solid var(--border-color);}
         
         #password-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            justify-content: center; align-items: center; z-index: 1000;
+            justify-content: center; align-items: center; z-index: 1000; display: none;
         }
         .password-prompt {
             background-color: var(--secondary-color); border: 1px solid var(--border-color);
@@ -76,19 +77,25 @@
             padding: 10px 20px; margin-top: 20px; border-radius: 4px; cursor: pointer; font-weight: bold;
         }
         .access-denied { color: var(--redacted-color); margin-top: 15px; display: none; }
+        .directive { border: 2px solid var(--redacted-color); background-color: #2d0f0f; padding: 20px; margin-top: 20px;}
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid var(--border-color); padding: 8px 12px; text-align: left; }
+        th { background-color: var(--secondary-color); }
+        ul { padding-left: 20px; }
     </style>
 </head>
 <body>
     <aside id="sidebar">
         <div id="sidebar-header">A.R.C. DATABASE</div>
         <ul id="anomaly-list">
-            <li class="nav-link" data-target="page-anomaly-001">ARC-001: The Ephemeral Pen data-password="whisper">ARC-002: The Paranoia Machine <span class="lock-icon">🔒</span></li>
-            <li class="nav-link" data-target="page-anomaly-303" 
-            <li class="nav-link" data-target="page-anomaly-003" 
+            <li class="nav-link" data-target="page-anomaly-001">ARC-001: Ephemeral Pen</li>
+            <li class="nav-link" data-target="page-anomaly-002" data-password="whisper">ARC-002: Paranoia Machine <span class="lock-icon">🔒</span></li>
+            <li class="nav-link" data-target="page-anomaly-003" data-password="umbra">ARC-003: Light Eater <span class="lock-icon">🔒</span></li>
+            <li class="nav-link" data-target="page-anomaly-303" data-password="inaction.is.failure">ARC-303: The Echo Eater <span class="lock-icon">🔒</span></li>
         </ul>
         <div class="sidebar-footer">
             <hr>
-            <a class="nav-link sidebar-link" data-target="page-directive">A1</a>
+            <a class="nav-link sidebar-link" data-target="page-directive">Directive 01</a>
             <a class="nav-link sidebar-link" data-target="page-license">License</a>
         </div>
     </aside>
@@ -96,7 +103,7 @@
     <main id="main-content">
         <!-- ===== WELCOME SCREEN (Default Page) ===== -->
         <div id="page-welcome" class="content-page active">
-            <h1>Welcome, ???,</h1>
+            <h1>Welcome, Operative</h1>
             <p>Select a file from the database to begin.</p>
         </div>
 
@@ -107,12 +114,12 @@
             <h2>Containment Procedures</h2>
             <p>Object is to be kept in a standard secure locker at Site-19.</p>
             <h2>Description</h2>
-            <p>ARC-001 is a common fountain pen of indeterminate brand, discovered in the year <span class="redacted">████</span>. Any text written with the pen will slowly fade and disappear completely within 24 hours.</p>
+            <p>ARC-001 is a common fountain pen of indeterminate brand. Any text written with the pen will fade and disappear completely within 24 hours.</p>
         </div>
 
-        <!-- ===== ANOMALY 303 CONTENT ===== -->
-        <div id="page-anomaly-303" class="content-page">
-            <h1>File: Anomaly ARC-303</h1>
+        <!-- ===== ANOMALY 002 CONTENT ===== -->
+        <div id="page-anomaly-002" class="content-page">
+            <h1>File: Anomaly ARC-002</h1>
             <div class="info-block"><strong>Object Class:</strong> Euclid</div>
             <h2>Containment Procedures</h2>
             <p>ARC-002 is to be contained in a sound-proofed chamber. No verbal communication is permitted.</p>
@@ -127,87 +134,26 @@
             <h2>Containment Procedures</h2>
             <p>The object must be kept in a perpetually dark, electromagnetically-shielded vault.</p>
             <h2>Description</h2>
-            <p>ARC-003 is a small, perfectly smooth sphere. If exposed to light, it begins to <span class="redacted">██████████████████</span>, causing rapid environmental decay.</p>
+            <p>ARC-003 is a small, perfectly smooth sphere. If exposed to light, it begins to <span class="redacted">██████████</span>, causing rapid environmental decay.</p>
         </div>
 
-        <!-- ===== DIRECTIVE 01 (ABOUT) CONTENT ===== -->
+        <!-- ===== ANOMALY 303 CONTENT GOES HERE ===== -->
+        <div id="page-anomaly-303" class="content-page">
+            <!-- Bu alana aşağıdaki ikinci kod bloğunu yapıştırın -->
+        </div>
+
+        <!-- ===== OTHER PAGES ===== -->
         <div id="page-directive" class="content-page">
-            <h1>Directive 01: Our Purpose</h1>
-            <p>The veil of consensus reality is thin. It is a fragile construct, easily torn by paradoxes, temporal incursions, and events that should not be. We are the guardians of that veil.</p>
-            <p>We operate in the shadows between seconds, in the moments that history forgets. We are the Archive of Regulated Chrono-Anomalies. Our purpose is not to understand, but to contain. Not to explain, but to <span class="redacted">███████</span>.</p>
-        
-            <h2>1. Organization Overview</h2>
-            <p>A.R.C. is a covert international organization operating under secret protocols with multiple governments worldwide. It is empowered to detect, control, and if necessary, eliminate temporal anomalies. Though officially unregistered in any country, its existence is recognized at the highest security levels within allied governments.</p>
-            <p><strong>Mandate:</strong></p>
-            <ul>
-                <li>Priority access and operation rights in any nation’s borders</li>
-                <li>Authority to operate beyond local and international laws</li>
-                <li>Unlimited censorship and control over anomaly-related information</li>
-            </ul>
-        
-            <h2>2. Organizational Structure</h2>
-            <p><strong>Field Agents:</strong> Highly trained operatives with a single unified rank, tasked with rapid response and anomaly containment in the field. They operate individually or in small strike teams (3–5 members) and blend into civilian environments when needed.</p>
-            <p><strong>The Council:</strong> Anonymously composed of high-ranking representatives from allied governments and deep intelligence figures. They maintain absolute secrecy using voice changers and visual distortion devices. Decisions flow top-down; field agents receive orders with no direct contact or knowledge of council identities.</p>
-            <p><strong>Professors:</strong> Senior scientific advisors and anomaly researchers contracted by A.R.C. They conduct in-depth studies on contained anomalies and provide strategic guidance on containment and potential applications. Professors operate within secure labs, isolated from field operations, but their findings influence Council directives.</p>
-        
-            <h2>3. Experiment Class — Class E</h2>
-            <p>A.R.C. utilizes human subjects for experimental purposes under controlled conditions.</p>
-            <p><strong>Sources of Subjects:</strong></p>
-            <ul>
-                <li>Voluntary programs with financial incentives offered to vulnerable families</li>
-                <li>Mandatory enrollment of individuals deemed threats by allied governments</li>
-                <li>Disciplinary demotion of internal staff violating protocols</li>
-            </ul>
-            <p><strong>Status:</strong><br>
-            Class E individuals lose all official identity and exist only as experiment codes within A.R.C.’s system.</p>
-        
-            <h2>4. Classification System</h2>
-            <h3>4.1 Stability Codes</h3>
-            <table>
-                <thead>
-                    <tr><th>Code</th><th>Description</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>Safe</strong></td><td>Fully controllable anomaly</td></tr>
-                    <tr><td><strong>Unstable</strong></td><td>Partially controllable anomaly</td></tr>
-                    <tr><td><strong>Critical</strong></td><td>Uncontrollable, constant threat</td></tr>
-                </tbody>
-            </table>
-            <h3>4.2 Threat Levels</h3>
-            <table>
-                <thead>
-                    <tr><th>Level</th><th>Effect Range</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>T-1</strong></td><td>Localized effect (room, building)</td></tr>
-                    <tr><td><strong>T-2</strong></td><td>Regional effect (city, area)</td></tr>
-                    <tr><td><strong>T-3</strong></td><td>Global or multi-timeline effect</td></tr>
-                </tbody>
-            </table>
-        
-            <h2>5. Relations with Governments</h2>
-            <p>Allied governments grant A.R.C. immunity and unlimited operational authority. In exchange, A.R.C. shares certain anomalies or directs them to serve governmental interests. Some governments suspect the Council members are covertly their own operatives managing the organization.</p>
-        
-            <h2>6. Operational Protocols</h2>
-            <p>Upon detection or alert, A.R.C. teams deploy within two hours to the target location. Local authorities provide perimeter security but are forbidden from direct engagement. After operations, witnesses undergo strict information suppression handled via government cooperation.</p>
+             <h1>Directive 01: Our Purpose</h1>
+             <p>The veil of consensus reality is thin...</p>
         </div>
-
-
-        <!-- ===== USAGE PROTOCOL (LICENSE) CONTENT ===== -->
         <div id="page-license" class="content-page">
             <h1>License</h1>
-            <p>This document outlines the binding terms for any third-party engagement with A.R.C. intellectual property.</p>
-            <pre>
-A.R.C. Project Custom License - Version 3.0
-Copyright (c) 2025 -Hyrrx
-
-### Section 1: Core Philosophy
-The A.R.C. universe is a work of fiction... (Lisansın tamamı buraya gelecek)
-            </pre>
+            <p>This document outlines the binding terms...</p>
         </div>
     </main>
 
-    <div id="password-modal">
+    <div id="password-modal" style="display: none;">
         <div class="password-prompt">
             <label for="password-input">AUTHENTICATION REQUIRED</label>
             <input type="password" id="password-input" placeholder="Enter Passcode...">
@@ -217,56 +163,71 @@ The A.R.C. universe is a work of fiction... (Lisansın tamamı buraya gelecek)
     </div>
 
     <script>
-        const allNavLinks = document.querySelectorAll('.nav-link');
-        const contentPages = document.querySelectorAll('.content-page');
-        const passwordModal = document.getElementById('password-modal');
-        const passwordInput = document.getElementById('password-input');
-        const passwordSubmit = document.getElementById('password-submit');
-        const deniedMessage = document.getElementById('denied-message');
+        document.addEventListener('DOMContentLoaded', () => {
+            const allNavLinks = document.querySelectorAll('.nav-link');
+            const contentPages = document.querySelectorAll('.content-page');
+            const passwordModal = document.getElementById('password-modal');
+            const passwordInput = document.getElementById('password-input');
+            const passwordSubmit = document.getElementById('password-submit');
+            const deniedMessage = document.getElementById('denied-message');
+            let currentAuthCallback = null;
 
-        function switchPage(targetId) {
-            contentPages.forEach(page => page.classList.remove('active'));
-            const newActivePage = document.getElementById(targetId);
-            if (newActivePage) {
-                newActivePage.classList.add('active');
-            } else {
-                document.getElementById('page-welcome').classList.add('active');
-            }
-            passwordModal.style.display = 'none';
-        }
-
-        allNavLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.dataset.target;
-                const requiredPassword = link.dataset.password;
-
-                const activateLinkAndPage = () => {
-                    allNavLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    switchPage(targetId);
-                };
-
-                if (requiredPassword) {
-                    passwordModal.style.display = 'flex';
-                    passwordInput.value = '';
-                    deniedMessage.style.display = 'none';
-                    passwordInput.focus();
-
-                    const newSubmit = passwordSubmit.cloneNode(true);
-                    passwordSubmit.parentNode.replaceChild(newSubmit, passwordSubmit);
-
-                    newSubmit.addEventListener('click', () => {
-                        if (passwordInput.value === requiredPassword) {
-                            activateLinkAndPage();
-                        } else {
-                            deniedMessage.style.display = 'block';
-                            passwordInput.value = '';
-                        }
-                    });
+            function switchPage(targetId) {
+                contentPages.forEach(page => page.classList.remove('active'));
+                const newActivePage = document.getElementById(targetId);
+                if (newActivePage) {
+                    newActivePage.classList.add('active');
                 } else {
-                    activateLinkAndPage();
+                    document.getElementById('page-welcome').classList.add('active');
                 }
+                passwordModal.style.display = 'none';
+            }
+            
+            function handleAuth() {
+                if (currentAuthCallback) {
+                    currentAuthCallback();
+                }
+            }
+
+            passwordSubmit.addEventListener('click', handleAuth);
+            passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleAuth();
+                }
+            });
+
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.dataset.target;
+                    const requiredPassword = link.dataset.password;
+
+                    const activateLinkAndPage = () => {
+                        allNavLinks.forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                        switchPage(targetId);
+                    };
+
+                    if (requiredPassword) {
+                        passwordModal.style.display = 'flex';
+                        passwordInput.value = '';
+                        deniedMessage.style.display = 'none';
+                        passwordInput.focus();
+                        
+                        currentAuthCallback = () => {
+                            if (passwordInput.value === requiredPassword) {
+                                activateLinkAndPage();
+                                passwordModal.style.display = 'none';
+                            } else {
+                                deniedMessage.style.display = 'block';
+                                passwordInput.value = '';
+                                passwordInput.focus();
+                            }
+                        };
+                    } else {
+                        activateLinkAndPage();
+                    }
+                });
             });
         });
     </script>
