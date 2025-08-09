@@ -27,22 +27,37 @@
             text-shadow: 0 0 5px var(--accent-color); margin-bottom: 40px; text-align: center; flex-shrink: 0;
         }
         #anomaly-list { list-style-type: none; padding: 0; margin: 0; overflow-y: auto; }
-        #anomaly-list li {
+        .nav-link {
             padding: 12px 15px; margin-bottom: 8px; border-radius: 6px; cursor: pointer;
             border-left: 4px solid transparent; transition: all 0.2s ease;
         }
-        #anomaly-list li:hover { background-color: var(--border-color); }
-        #anomaly-list li.active {
+        .nav-link:hover { background-color: var(--border-color); }
+        .nav-link.active {
             background-color: var(--border-color);
             border-left: 4px solid var(--accent-color); font-weight: bold;
         }
-        #anomaly-list li .lock-icon { float: right; opacity: 0.6; }
-        #main-content { flex-grow: 1; position: relative; background-color: var(--primary-color); }
-        #content-frame { width: 100%; height: 100%; border: none; }
-        #welcome-screen { padding: 40px; }
-        #welcome-screen h1 { font-family: 'Orbitron', sans-serif; color: white; }
+        .nav-link .lock-icon { float: right; opacity: 0.6; }
+        
+        .sidebar-footer { margin-top: auto; padding-top: 20px; }
+        .sidebar-footer hr { border: none; border-top: 1px solid var(--border-color); margin-bottom: 20px; }
+        .sidebar-link {
+            display: block; color: var(--text-color); text-decoration: none;
+            padding: 10px 15px; margin-bottom: 5px; border-radius: 6px;
+            font-size: 0.9em; opacity: 0.7;
+        }
+
+        #main-content { flex-grow: 1; padding: 40px; overflow-y: auto; }
+        .content-page { display: none; }
+        .content-page.active { display: block; }
+        .content-page h1 { font-family: 'Orbitron', sans-serif; color: white; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px;}
+        .content-page h2 { border-left: 4px solid #58a6ff; padding-left: 15px; }
+        .content-page h3 { border-left: 3px solid var(--accent-color); padding-left: 10px; margin-top: 30px; }
+        .content-page .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: var(--secondary-color); }
+        .content-page .redacted { background-color: #c9d1d9; color: #c9d1d9; user-select: none; border-radius: 3px; padding: 0 2px; }
+        .content-page pre { white-space: pre-wrap; word-wrap: break-word; font-size: 0.9em; line-height: 1.6; background-color: var(--secondary-color); padding: 15px; border-radius: 5px; border: 1px solid var(--border-color);}
+        
         #password-modal {
-            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
             justify-content: center; align-items: center; z-index: 1000;
         }
@@ -66,15 +81,76 @@
 <body>
     <aside id="sidebar">
         <div id="sidebar-header">A.R.C. DATABASE</div>
-        <ul id="anomaly-list"></ul>
+        <ul id="anomaly-list">
+            <li class="nav-link" data-target="page-anomaly-001">ARC-001: The Ephemeral Pen</li>
+            <li class="nav-link" data-target="page-anomaly-002" data-password="whisper">ARC-002: The Paranoia Machine <span class="lock-icon">🔒</span></li>
+            <li class="nav-link" data-target="page-anomaly-003" data-password="eclipse">ARC-003: The Void Sphere <span class="lock-icon">🔒</span></li>
+        </ul>
+        <div class="sidebar-footer">
+            <hr>
+            <a class="nav-link sidebar-link" data-target="page-directive">Directive 01: Our Purpose</a>
+            <a class="nav-link sidebar-link" data-target="page-license">Usage Protocol</a>
+        </div>
     </aside>
+
     <main id="main-content">
-        <div id="welcome-screen">
+        <!-- ===== WELCOME SCREEN (Default Page) ===== -->
+        <div id="page-welcome" class="content-page active">
             <h1>Welcome, Operator.</h1>
             <p>Select a file from the database to begin.</p>
         </div>
-        <iframe id="content-frame" style="display:none;"></iframe>
+
+        <!-- ===== ANOMALY 001 CONTENT ===== -->
+        <div id="page-anomaly-001" class="content-page">
+            <h1>File: Anomaly ARC-001</h1>
+            <div class="info-block"><strong>Object Class:</strong> Safe</div>
+            <h2>Containment Procedures</h2>
+            <p>Object is to be kept in a standard secure locker at Site-19.</p>
+            <h2>Description</h2>
+            <p>ARC-001 is a common fountain pen of indeterminate brand, discovered in the year <span class="redacted">████</span>. Any text written with the pen will slowly fade and disappear completely within 24 hours.</p>
+        </div>
+
+        <!-- ===== ANOMALY 002 CONTENT ===== -->
+        <div id="page-anomaly-002" class="content-page">
+            <h1>File: Anomaly ARC-002</h1>
+            <div class="info-block"><strong>Object Class:</strong> Euclid</div>
+            <h2>Containment Procedures</h2>
+            <p>ARC-002 is to be contained in a sound-proofed chamber. No verbal communication is permitted.</p>
+            <h2>Description</h2>
+            <p>ARC-002 is a vintage radio. When powered, it emits a low hum that causes listeners to experience severe paranoia.</p>
+        </div>
+        
+        <!-- ===== ANOMALY 003 CONTENT ===== -->
+        <div id="page-anomaly-003" class="content-page">
+            <h1>File: Anomaly ARC-003</h1>
+            <div class="info-block"><strong>Object Class:</strong> Keter</div>
+            <h2>Containment Procedures</h2>
+            <p>The object must be kept in a perpetually dark, electromagnetically-shielded vault.</p>
+            <h2>Description</h2>
+            <p>ARC-003 is a small, perfectly smooth sphere. If exposed to light, it begins to <span class="redacted">██████████████████</span>, causing rapid environmental decay.</p>
+        </div>
+
+        <!-- ===== DIRECTIVE 01 (ABOUT) CONTENT ===== -->
+        <div id="page-directive" class="content-page">
+            <h1>Directive 01: Our Purpose</h1>
+            <p>The veil of consensus reality is thin. It is a fragile construct, easily torn by paradoxes, temporal incursions, and events that should not be. We are the guardians of that veil.</p>
+            <p>We operate in the shadows between seconds, in the moments that history forgets. We are the Archive of Regulated Chrono-Anomalies. Our purpose is not to understand, but to contain. Not to explain, but to <span class="redacted">███████</span>.</p>
+        </div>
+
+        <!-- ===== USAGE PROTOCOL (LICENSE) CONTENT ===== -->
+        <div id="page-license" class="content-page">
+            <h1>Usage Protocol & Terms of Engagement</h1>
+            <p>This document outlines the binding terms for any third-party engagement with A.R.C. intellectual property.</p>
+            <pre>
+A.R.C. Project Custom License - Version 3.0
+Copyright (c) 2025 -Hyrrx
+
+### Section 1: Core Philosophy
+The A.R.C. universe is a work of fiction... (Lisansın tamamı buraya gelecek)
+            </pre>
+        </div>
     </main>
+
     <div id="password-modal">
         <div class="password-prompt">
             <label for="password-input">AUTHENTICATION REQUIRED</label>
@@ -83,79 +159,60 @@
             <button id="password-submit">Authenticate</button>
         </div>
     </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Yeni anomali dosyalarını bu listeye ekleyin
-            const anomalyFiles = ['anomaly-001.html', 'anomaly-002.html', 'anomaly-003.html'];
-            const anomalyList = document.getElementById('anomaly-list');
-
-            const fetchAnomalyData = async (fileName) => {
-                try {
-                    const response = await fetch(fileName);
-                    if (!response.ok) {
-                        console.error(`File not found: ${fileName}`);
-                        return null;
-                    }
-                    const text = await response.text();
-                    const doc = new DOMParser().parseFromString(text, 'text/html');
-                    const scriptTag = doc.querySelector('script[type="application/json"]');
-                    return JSON.parse(scriptTag.textContent);
-                } catch (error) { console.error(`Error loading or parsing ${fileName}:`, error); return null; }
-            };
-
-            for (const file of anomalyFiles) {
-                const data = await fetchAnomalyData(file);
-                if (data) {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `${data.id}: ${data.name}`;
-                    listItem.dataset.fileName = file;
-                    if (data.requiresPassword) {
-                        const lockIcon = document.createElement('span');
-                        lockIcon.className = 'lock-icon'; lockIcon.textContent = '🔒';
-                        listItem.appendChild(lockIcon);
-                    }
-                    listItem.addEventListener('click', () => handleAnomalyClick(file, data));
-                    anomalyList.appendChild(listItem);
-                }
-            }
-        });
-
-        const contentFrame = document.getElementById('content-frame');
-        const welcomeScreen = document.getElementById('welcome-screen');
+        const allNavLinks = document.querySelectorAll('.nav-link');
+        const contentPages = document.querySelectorAll('.content-page');
         const passwordModal = document.getElementById('password-modal');
         const passwordInput = document.getElementById('password-input');
+        const passwordSubmit = document.getElementById('password-submit');
         const deniedMessage = document.getElementById('denied-message');
 
-        function handleAnomalyClick(fileName, data) {
-            document.querySelectorAll('#anomaly-list li').forEach(li => li.classList.remove('active'));
-            document.querySelector(`[data-file-name="${fileName}"]`).classList.add('active');
-
-            if (data.requiresPassword) {
-                passwordModal.style.display = 'flex';
-                passwordInput.value = '';
-                deniedMessage.style.display = 'none';
-
-                const newSubmit = passwordModal.querySelector('#password-submit').cloneNode(true);
-                passwordModal.querySelector('#password-submit').parentNode.replaceChild(newSubmit, passwordModal.querySelector('#password-submit'));
-                
-                newSubmit.addEventListener('click', () => {
-                    if (passwordInput.value === data.password) {
-                        loadAnomaly(fileName);
-                    } else {
-                        deniedMessage.style.display = 'block';
-                    }
-                });
+        function switchPage(targetId) {
+            contentPages.forEach(page => page.classList.remove('active'));
+            const newActivePage = document.getElementById(targetId);
+            if (newActivePage) {
+                newActivePage.classList.add('active');
             } else {
-                loadAnomaly(fileName);
+                document.getElementById('page-welcome').classList.add('active');
             }
+            passwordModal.style.display = 'none';
         }
 
-        function loadAnomaly(fileName) {
-            passwordModal.style.display = 'none';
-            welcomeScreen.style.display = 'none';
-            contentFrame.style.display = 'block';
-            contentFrame.src = fileName;
-        }
+        allNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.dataset.target;
+                const requiredPassword = link.dataset.password;
+
+                const activateLinkAndPage = () => {
+                    allNavLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    switchPage(targetId);
+                };
+
+                if (requiredPassword) {
+                    passwordModal.style.display = 'flex';
+                    passwordInput.value = '';
+                    deniedMessage.style.display = 'none';
+                    passwordInput.focus();
+
+                    const newSubmit = passwordSubmit.cloneNode(true);
+                    passwordSubmit.parentNode.replaceChild(newSubmit, passwordSubmit);
+
+                    newSubmit.addEventListener('click', () => {
+                        if (passwordInput.value === requiredPassword) {
+                            activateLinkAndPage();
+                        } else {
+                            deniedMessage.style.display = 'block';
+                            passwordInput.value = '';
+                        }
+                    });
+                } else {
+                    activateLinkAndPage();
+                }
+            });
+        });
     </script>
 </body>
 </html>
