@@ -1,4 +1,3 @@
-A.R.C. Project Custom License - Version 3.0
 Copyright (c) 2025 -Hyrrx
 
 ### Section 1: Core Philosophy
