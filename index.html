@@ -37,8 +37,6 @@
             background-color: var(--border-color);
             border-left: 4px solid var(--accent-color); font-weight: bold;
         }
-        .nav-link .lock-icon { float: right; opacity: 0.6; }
-        
         .sidebar-footer { margin-top: auto; padding-top: 20px; }
         .sidebar-footer hr { border: none; border-top: 1px solid var(--border-color); margin-bottom: 20px; }
         .sidebar-link {
@@ -46,37 +44,15 @@
             padding: 10px 15px; margin-bottom: 5px; border-radius: 6px;
             font-size: 0.9em; opacity: 0.7;
         }
-
         #main-content { flex-grow: 1; padding: 40px; overflow-y: auto; }
         .content-page { display: none; }
         .content-page.active { display: block; }
-        .content-page h1 { font-family: 'Orbitron', sans-serif; color: white; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px;}
-        .content-page h2 { border-left: 4px solid #58a6ff; padding-left: 15px; margin-top: 40px; }
-        .content-page h3 { border-left: 3px solid var(--border-color); color: #a6b0b9; padding-left: 10px; margin-top: 30px; border-bottom: 1px dotted #30363d; padding-bottom: 5px; }
-        .content-page .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: var(--secondary-color); line-height: 1.8; }
-        .content-page .redacted { background-color: #c9d1d9; color: #c9d1d9; user-select: none; border-radius: 3px; padding: 0 4px; }
-        .content-page pre { white-space: pre-wrap; word-wrap: break-word; font-size: 0.9em; line-height: 1.6; background-color: #000; padding: 15px; border-radius: 5px; border: 1px solid var(--border-color);}
-        
-        #password-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            justify-content: center; align-items: center; z-index: 1000; display: none;
-        }
-        .password-prompt {
-            background-color: var(--secondary-color); border: 1px solid var(--border-color);
-            padding: 30px; border-radius: 8px; text-align: center; width: 350px;
-        }
-        .password-prompt label { display: block; margin-bottom: 15px; font-weight: bold; color: var(--accent-color); }
-        .password-prompt input {
-            background-color: var(--primary-color); border: 1px solid var(--border-color);
-            color: var(--text-color); padding: 10px; width: 80%; border-radius: 4px;
-            text-align: center; font-family: 'Roboto Mono', monospace;
-        }
-        .password-prompt button {
-            background-color: var(--accent-color); color: var(--primary-color); border: none;
-            padding: 10px 20px; margin-top: 20px; border-radius: 4px; cursor: pointer; font-weight: bold;
-        }
-        .access-denied { color: var(--redacted-color); margin-top: 15px; display: none; }
+        h1 { font-family: 'Orbitron', sans-serif; color: white; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 30px;}
+        h2 { border-left: 4px solid #58a6ff; padding-left: 15px; margin-top: 40px; }
+        h3 { border-left: 3px solid var(--border-color); color: #a6b0b9; padding-left: 10px; margin-top: 30px; border-bottom: 1px dotted #30363d; padding-bottom: 5px; }
+        .info-block { border: 1px dashed #30363d; padding: 20px; margin: 20px 0; border-radius: 5px; background-color: var(--secondary-color); line-height: 1.8; }
+        .redacted { background-color: #c9d1d9; color: #c9d1d9; user-select: none; border-radius: 3px; padding: 0 4px; }
+        pre { white-space: pre-wrap; word-wrap: break-word; font-size: 0.9em; line-height: 1.6; background-color: #000; padding: 15px; border-radius: 5px; border: 1px solid var(--border-color);}
         .directive { border: 2px solid var(--redacted-color); background-color: #2d0f0f; padding: 20px; margin-top: 20px;}
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid var(--border-color); padding: 8px 12px; text-align: left; }
@@ -89,9 +65,9 @@
         <div id="sidebar-header">A.R.C. DATABASE</div>
         <ul id="anomaly-list">
             <li class="nav-link" data-target="page-anomaly-001">ARC-001: Ephemeral Pen</li>
-            <li class="nav-link" data-target="page-anomaly-002" data-password="whisper">ARC-002: Paranoia Machine <span class="lock-icon">🔒</span></li>
-            <li class="nav-link" data-target="page-anomaly-003" data-password="umbra">ARC-003: Light Eater <span class="lock-icon">🔒</span></li>
-            <li class="nav-link" data-target="page-anomaly-303" data-password="inaction.is.failure">ARC-303: The Echo Eater <span class="lock-icon">🔒</span></li>
+            <li class="nav-link" data-target="page-anomaly-002">ARC-002: Paranoia Machine</li>
+            <li class="nav-link" data-target="page-anomaly-003">ARC-003: Light Eater</li>
+            <li class="nav-link" data-target="page-anomaly-303">ARC-303: The Echo Eater</li>
         </ul>
         <div class="sidebar-footer">
             <hr>
@@ -114,7 +90,7 @@
             <h2>Containment Procedures</h2>
             <p>Object is to be kept in a standard secure locker at Site-19.</p>
             <h2>Description</h2>
-            <p>ARC-001 is a common fountain pen of indeterminate brand. Any text written with the pen will fade and disappear completely within 24 hours.</p>
+            <p>ARC-001 is a common fountain pen. Any text written with the pen will fade and disappear completely within 24 hours.</p>
         </div>
 
         <!-- ===== ANOMALY 002 CONTENT ===== -->
@@ -137,15 +113,60 @@
             <p>ARC-003 is a small, perfectly smooth sphere. If exposed to light, it begins to <span class="redacted">██████████</span>, causing rapid environmental decay.</p>
         </div>
 
-        <!-- ===== ANOMALY 303 CONTENT GOES HERE ===== -->
+        <!-- ===== ANOMALY 303 CONTENT ===== -->
         <div id="page-anomaly-303" class="content-page">
-            <!-- Bu alana aşağıdaki ikinci kod bloğunu yapıştırın -->
+            <h1>A.R.C. FILE: ARC-303 "The Echo Eater"</h1>
+            <p style="color: var(--redacted-color); text-align: center; font-weight: bold;">CLEARANCE LEVEL: (LEVEL 4 AND ABOVE ONLY)</p>
+        
+            <div class="info-block">
+                <strong>Anomaly Code:</strong> ARC-303<br>
+                <strong>Nickname:</strong> "The Echo Eater"<br>
+                <strong>Year of Discovery:</strong> 1920<br>
+                <strong>Stability Code:</strong> CRITICAL<br>
+                <strong>Threat Level:</strong> T-2
+            </div>
+        
+            <h2>1.0 ANOMALY DESCRIPTION</h2>
+            
+            <h3>1.1 Physical Description</h3>
+            <p>ARC-303 is a temporal predator with no physically stable form. It manifests as a momentary perceptual distortion or a moving shadow. On rare occasions, its silhouette, visible in reflections, has a humanoid structure but with unnaturally long limbs. Where its face should be, there is a smooth, dark void.</p>
+        
+            <h3>1.2 Anomalous Effect and Behavior</h3>
+            <p>It "eats" personal timelines—memories, existence, and traces in history. This occurs in three stages: Stalking, The Feed, and The Hollow Echo, after which only a biological shell of the victim remains.</p>
+        
+            <h2>2.0 PROTOCOLS AND OPERATIONAL HISTORY</h2>
+            
+            <h3>2.3 LOG TRANSCRIPT: BLIND EYE PROTOCOL</h3>
+            <pre>
+[21:00:00] - Agent Vesper enters Absolute Isolation Zone.
+CONSCIOUSNESS INTEGRITY: 100%
+
+[23:45:02] - Vesper: "Déjà vu. I could swear I've passed this hill before..."
+CONSCIOUSNESS INTEGRITY: 98%
+
+[01:17:55] - Vesper (whispering): "Central, something in the reflection. It was behind me. Tall..."
+CONSCIOUSNESS INTEGRITY: 89%
+
+[03:04:49] - Vesper (rapid breathing): "It's here... I see it... My mother's face... but... she has no face..."
+CONSCIOUSNESS INTEGRITY: 45%
+
+[03:10:31] - (Static only)
+CONSCIOUSNESS INTEGRITY: 0%
+SIGNAL LOST
+
+[03:12:00] - END LOG - Observer's note: "Data stream complete. Bait expended. Protocol successful."</pre>
+            
+            <h2>3.0 ADDENDUM: PROJECT KRONOS ANCHOR</h2>
+            <div class="directive">
+                <strong>COUNCIL DIRECTIVE // EYES ONLY // DESTROY AFTER READING</strong><br><br>
+                Professor, your concerns regarding a potential "<span class="redacted">Echo Cascade</span>" are noted. The risk has been calculated within acceptable parameters. Inaction is failure. Proceed.
+            </div>
         </div>
 
         <!-- ===== OTHER PAGES ===== -->
         <div id="page-directive" class="content-page">
-             <h1>Directive 01: Our Purpose</h1>
-             <p>The veil of consensus reality is thin...</p>
+            <h1>Directive 01: Our Purpose</h1>
+            <p>The veil of consensus reality is thin...</p>
         </div>
         <div id="page-license" class="content-page">
             <h1>License</h1>
@@ -153,24 +174,10 @@
         </div>
     </main>
 
-    <div id="password-modal" style="display: none;">
-        <div class="password-prompt">
-            <label for="password-input">AUTHENTICATION REQUIRED</label>
-            <input type="password" id="password-input" placeholder="Enter Passcode...">
-            <p class="access-denied" id="denied-message">ACCESS DENIED</p>
-            <button id="password-submit">Authenticate</button>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const allNavLinks = document.querySelectorAll('.nav-link');
             const contentPages = document.querySelectorAll('.content-page');
-            const passwordModal = document.getElementById('password-modal');
-            const passwordInput = document.getElementById('password-input');
-            const passwordSubmit = document.getElementById('password-submit');
-            const deniedMessage = document.getElementById('denied-message');
-            let currentAuthCallback = null;
 
             function switchPage(targetId) {
                 contentPages.forEach(page => page.classList.remove('active'));
@@ -180,53 +187,17 @@
                 } else {
                     document.getElementById('page-welcome').classList.add('active');
                 }
-                passwordModal.style.display = 'none';
             }
-            
-            function handleAuth() {
-                if (currentAuthCallback) {
-                    currentAuthCallback();
-                }
-            }
-
-            passwordSubmit.addEventListener('click', handleAuth);
-            passwordInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    handleAuth();
-                }
-            });
 
             allNavLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const targetId = link.dataset.target;
-                    const requiredPassword = link.dataset.password;
-
-                    const activateLinkAndPage = () => {
-                        allNavLinks.forEach(l => l.classList.remove('active'));
-                        link.classList.add('active');
-                        switchPage(targetId);
-                    };
-
-                    if (requiredPassword) {
-                        passwordModal.style.display = 'flex';
-                        passwordInput.value = '';
-                        deniedMessage.style.display = 'none';
-                        passwordInput.focus();
-                        
-                        currentAuthCallback = () => {
-                            if (passwordInput.value === requiredPassword) {
-                                activateLinkAndPage();
-                                passwordModal.style.display = 'none';
-                            } else {
-                                deniedMessage.style.display = 'block';
-                                passwordInput.value = '';
-                                passwordInput.focus();
-                            }
-                        };
-                    } else {
-                        activateLinkAndPage();
-                    }
+                    
+                    // Activate the clicked link and show the corresponding page
+                    allNavLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    switchPage(targetId);
                 });
             });
         });
